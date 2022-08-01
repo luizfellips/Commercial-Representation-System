@@ -53,5 +53,5 @@ class MainApplication:
 
 root = Tk()
 MainApplication(root)
-root.geometry('900x600')
+root.geometry('800x600')
 root.mainloop()
