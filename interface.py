@@ -1,23 +1,29 @@
 from tkinter import *
 from tkinter import ttk
+import pandas as pd
 
 
 
 class MainApplication:
     def __init__(self, toplevel):
+        
         config = ('Verdana', 15, 'bold')
         columns = ('qtd','cod','espec','pre')
+        
 
         self.frame = Frame(toplevel).grid()
         self.frame2 = Frame(toplevel).grid()
         
         
 
-        self.title = Label(self.frame, text='DATA STRUCTURAE', font=config).grid()
+        self.title = Label(self.frame, text='ESTRUTURADOR DE DADOS', font=config).grid()
         
         self.labelarchive = Label(self.frame,text='Nome da tabela a ser lida: ',font=('Verdana',10,'bold')).grid()
         self.archivename = Entry(self.frame)
         self.archivename.grid()
+        
+        self.carregar = Button(self.frame,text='CARREGAR',width=15,fg='black',bg='white',border=2,relief='groove')
+        self.carregar.grid(pady=5)
         
         self.firstlabel = Label(self.frame, text='QUANTIDADE',
                                 font=('Verdana', 10, 'bold')).grid(column=0)
@@ -46,7 +52,7 @@ class MainApplication:
         self.thirdentry = Entry(self.frame)
         self.thirdentry.grid()
         
-        self.savebutton = Button(self.frame,text='SALVAR',width=15,fg='black',bg='white',border=2,relief='raised')
+        self.savebutton = Button(self.frame,text='SALVAR',width=15,fg='black',bg='white',border=2,relief='groove')
         self.savebutton.grid(pady=5)
 
 
