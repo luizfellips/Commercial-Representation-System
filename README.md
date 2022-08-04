@@ -28,4 +28,3 @@ com suas respectivas colunas imediatamente e o arquivo ficará disponibilizado n
 ```
 ### Funcionalidades a serem adicionadas
 - Criação de um arquivo temporário que guardará as informações sendo inseridas, em caso de fechamento acidental do aplicativo.
-- 
