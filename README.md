@@ -1,6 +1,11 @@
-# EXCEL AUTOMATIONS PROJECT
+# EXCEL AUTOMATIONS PROJECT GUI
 
-Construí este sistema para facilitar no preenchimento de planilhas de acordo com dados inseridos. Utilizei a biblioteca padrão de construção de GUIs do Python(Tkinter) e Pandas para análise e processamento da base de dados de planilhas em Excel.
+<img src="https://user-images.githubusercontent.com/110192027/182881045-9ee4fa11-6f19-4958-ab0a-3e07be47544d.png" alt="print1" width="50%"/>
+<img src="https://user-images.githubusercontent.com/110192027/182881058-9f85cbee-d8bf-4432-9fa6-e57745eb1513.png" alt="print2" width="50%"/>
+<img src="https://user-images.githubusercontent.com/110192027/182881064-cec66431-b121-406e-8321-38a2d8f32c1b.png" alt="print3" width="50%"/>
+
+
+### Construí este sistema para facilitar no preenchimento de planilhas de acordo com dados inseridos. Utilizei a biblioteca padrão de construção de GUIs do Python(Tkinter) e Pandas para análise e processamento da base de dados de planilhas em Excel.
 
 ### UTILIZANDO O PROGRAMA
 - Insira o nome do arquivo a ser lido com sua respectiva extensão, .xlsx(o mesmo deve estar no mesmo formato dos arquivos na pasta _files, com suas 3 colunas respectivas, CÓDIGO, ESPECIFICAÇÃO e PREÇO)
@@ -16,15 +21,5 @@ Se possuir apenas números: Digite apenas o número, sem nenhuma pontuação.
 Se possuir letras e números: Digite da forma que está na tabela, mesmo se houver pontuações.
 
 
-### COMO FUNCIONA
-```
-O programa lê o nome do arquivo inserido e o transforma em um DataFrame, que facilita sua manipulação e resgate de dados.
-O DataFrame fica disponível enquanto o programa não é fechado ou até outro arquivo ser lido.
-Todo código inserido será pesquisado por toda a base de informações do DataFrame, onde será resgatado sua especificação e preço.
-Estes serão apresentados na visualização em árvore, no qual poderão ser selecionados e deletados se desejar.
-Essas informações ainda não estão sendo preenchidas na planilha, seu armazenamento é feito em listas e tuplas e totalmente temporário.
-No fim você insere o nome do arquivo para salvar, e clica no botão SALVAR, onde cada produto será inserido numa planilha
-com suas respectivas colunas imediatamente e o arquivo ficará disponibilizado na pasta saved_files.
-```
 ### Funcionalidades a serem adicionadas
 - Criação de um arquivo temporário que guardará as informações sendo inseridas, em caso de fechamento acidental do aplicativo.
