@@ -134,7 +134,6 @@ class MainApplication:
         name = self.thirdentry.get()
         try:
             empty_df = pd.DataFrame(columns=['QUANTIDADE','CÓDIGO','ESPECIFICAÇÃO','PREÇO'])
-            print(self.list_of_products)
             for count,tuples in enumerate(self.list_of_products):      
                 empty_df.loc[count,'QUANTIDADE'] = tuples[0]
                 empty_df.loc[count,'CÓDIGO'] = tuples[1]
