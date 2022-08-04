@@ -141,7 +141,7 @@ class MainApplication:
                 empty_df.loc[count,'PREÇO'] = tuples[3]
             if name.endswith('.xlsx'):
                 empty_df.set_index('QUANTIDADE',inplace=True)    
-                empty_df.to_excel(f'C:\\Users\\fellip\\Desktop\\excelproject\\saved_files\\{name}',sheet_name='PEDIDO')
+                empty_df.to_excel(f'saved_files\\{name}',sheet_name='PEDIDO')
                 self.savebutton.config(text='SALVO COM SUCESSO',fg='white',bg='green',border=3,width=25,relief='groove')
                 self.savebutton.after(1500,lambda:self.savebutton.config(text='SALVAR',width=15,fg='black',bg='white',border=2,relief='groove'))
             else:
