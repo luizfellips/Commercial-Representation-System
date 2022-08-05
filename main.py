@@ -113,6 +113,7 @@ class MainApplication:
     def load_archive(self,event):
         name = self.archivename.get()
         try:
+            self.secondtree.delete(*self.secondtree.get_children())
             self.product_data = pd.read_excel(f'_files/{name}')
             self.product_df = pd.DataFrame(self.product_data)
             self.carregar.config(text="CARREGADO COM SUCESSO",bg='green',fg='white',width=40,relief='groove')
