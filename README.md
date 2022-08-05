@@ -8,6 +8,7 @@
 
 Construí este sistema para facilitar no preenchimento de planilhas de acordo com dados inseridos. Utilizei a biblioteca padrão de construção de GUIs do Python(Tkinter) e Pandas para análise e processamento da base de dados de planilhas em Excel.
 
+
 ### UTILIZANDO O PROGRAMA
 - Insira o nome do arquivo a ser lido com sua respectiva extensão, .xlsx(o mesmo deve estar no mesmo formato dos arquivos na pasta _files, com suas 3 colunas respectivas, CÓDIGO, ESPECIFICAÇÃO e PREÇO), toda sua base de dados será exibida na visualização em árvore PRODUTOS
 
@@ -22,4 +23,5 @@ Construí este sistema para facilitar no preenchimento de planilhas de acordo co
 - O código dos arquivos deve ser inserido da seguinte maneira: 
 Se possuir apenas números: Digite apenas o número, sem nenhuma pontuação.
 Se possuir letras e números: Digite da forma que está na tabela, mesmo se houver pontuações.
+
 
