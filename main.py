@@ -40,6 +40,7 @@ class MainApplication:
         
         self.tituloespec = Label(self.frame,text='PROCURAR ESPECIFICAÇÃO',font=('Verdana',10,'bold')).grid(pady=75,row=1,sticky=N)
         self.especification = Entry(self.frame)
+        self.especification.bind('<Return>',self.search_for_infos)
         self.especification.grid(pady=100,row=1,sticky=N)
         self.procurar = Button(self.frame,text='PROCURAR/RESETAR',width=19,fg='black',bg='white',border=2,relief='groove')
         self.procurar.grid(pady=125,row=1,sticky=N)
@@ -47,6 +48,7 @@ class MainApplication:
         self.qtdlabel = Label(self.frame, text='QUANTIDADE',
                                 font=('Verdana', 10, 'bold')).grid(row=1,sticky=S,pady=100)
         self.quantiaentry = Entry(self.frame)
+        self.quantiaentry.bind('<Return>',self.pull_infos)
         self.quantiaentry.grid(row=1,sticky=S,pady=82)
         self.addproductone = Button(self.frame,text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove')
         self.addproductone.grid(row=1,sticky=S,pady=50)
@@ -163,6 +165,8 @@ class MainApplication:
                     self.tree.insert('',END,values=tuple_of_products)
                 self.addproductone.config(text='SUCESSO',bg='green',fg='white')
                 self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
+                self.especification.delete(0,END)
+                self.quantiaentry.delete(0,END)
             except:
                 self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
                 self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
