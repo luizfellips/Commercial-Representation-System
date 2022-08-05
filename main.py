@@ -19,6 +19,7 @@ class MainApplication:
         
         config = ('Verdana', 15, 'bold')
         columns = ('qtd','cod','espec','pre')
+        secondcolumns = ('cod','espec','pre')
         
 
         self.frame = Frame(toplevel).grid()
@@ -26,39 +27,54 @@ class MainApplication:
         
         
 
-        self.title = Label(self.frame, text='ESTRUTURADOR DE DADOS', font=config).grid()
+        self.title = Label(self.frame, text='ESTRUTURADOR DE DADOS', font=config).grid(row=0)
         
-        self.labelarchive = Label(self.frame,text='Nome da tabela a ser lida: ',font=('Verdana',10,'bold')).grid()
+        self.labelarchive = Label(self.frame,text='Nome da tabela a ser lida: ',font=('Verdana',10,'bold')).grid(row=1,sticky=N)
         self.archivename = Entry(self.frame)
-        self.archivename.grid()
+        self.archivename.grid(pady=25,row=1,sticky=N)
         self.archivename.bind('<Return>',self.load_archive)
         
         self.carregar = Button(self.frame,text='CARREGAR',width=15,fg='black',bg='white',border=2,relief='groove')
-        self.carregar.grid(pady=5)
+        self.carregar.grid(pady=50,row=1,sticky=N)
         self.carregar.bind('<Button-1>',self.load_archive)
+        
+        self.tituloespec = Label(self.frame,text='PROCURAR ESPECIFICAÇÃO',font=('Verdana',10,'bold')).grid(pady=75,row=1,sticky=N)
+        self.especification = Entry(self.frame)
+        self.especification.grid(pady=100,row=1,sticky=N)
+        self.procurar = Button(self.frame,text='PROCURAR',width=15,fg='black',bg='white',border=2,relief='groove')
+        self.procurar.grid(pady=125,row=1,sticky=N)
 
         
         self.firstlabel = Label(self.frame, text='QUANTIDADE',
-                                font=('Verdana', 10, 'bold')).grid(column=0)
+                                font=('Verdana', 10, 'bold')).grid(row=2,sticky=N)
         self.firstentry = Entry(self.frame)
-        self.firstentry.grid()
-        
-
-
+        self.firstentry.grid(row=2,sticky=N,pady=25)
 
 
         self.secondlabel = Label(self.frame, text='CÓDIGO',
-                                 font=('Verdana', 10, 'bold')).grid()
+                                 font=('Verdana', 10, 'bold')).grid(row=2,sticky=N,pady=50)
         self.secondentry = Entry(self.frame)
-        self.secondentry.grid(pady=5)
+        self.secondentry.grid(row=2,sticky=N,pady=75)
         self.secondentry.bind('<Return>',self.insert_infos)
-        self.addproduct = Button(self.frame,text='adicionar',width=15,fg='black',bg='white',border=2,relief='groove')
-        self.addproduct.grid(pady=5)
+        self.addproduct = Button(self.frame,text='ADICIONAR',width=15,fg='black',bg='white',border=2,relief='groove')
         self.addproduct.bind('<Button-1>',self.insert_infos)
-        self.deleteproduct = Button(self.frame,text='deletar',width=15,fg='black',bg='white',border=2,relief='groove')
-        self.deleteproduct.grid(pady=5)
+        self.addproduct.grid(row=2,sticky=N,pady=100)
+        self.deleteproduct = Button(self.frame,text='DELETAR',width=15,fg='black',bg='white',border=2,relief='groove')
         self.deleteproduct.bind('<Button-1>',self.delete_item)
+        self.deleteproduct.grid(row=2,sticky=N,pady=125)
         
+        
+        self.secondtreetitle = Label(self.frame2,text='PRODUTOS',font=config).grid(row=0,column=1,sticky=N)
+        self.secondtree = ttk.Treeview(self.frame2, columns=secondcolumns, show='headings')
+        self.secondtree.heading('cod',text='Código',anchor=CENTER)
+        self.secondtree.heading('espec',text='Especificação',anchor=CENTER)
+        self.secondtree.heading('pre',text='Preço',anchor=CENTER)
+        self.secondtree.column('cod',width=50)
+        self.secondtree.column('pre',width=50)
+        self.secondtree.column('espec',width=400)
+        self.secondtree.grid(pady=15,padx=15,row=1,column=1,sticky=N)
+        
+        self.treetitle = Label(self.frame2,text='SUA CONSULTA',font=config).grid(row=1,column=1,sticky=S)
         self.tree = ttk.Treeview(self.frame2, columns=columns, show='headings')
         self.tree.heading('qtd',text='Quantidade',anchor=CENTER)
         self.tree.heading('cod',text='Código',anchor=CENTER)
@@ -68,15 +84,16 @@ class MainApplication:
         self.tree.column('qtd',width=50)
         self.tree.column('pre',width=50)
         self.tree.column('espec',width=400)
-        self.tree.grid(padx=10)
+        self.tree.grid(padx=15,row=2,column=1,sticky=N)
         
-        self.thirdlabel = Label(self.frame2, text='NOME DO ARQUIVO PARA SALVAR',
-                                font=('Verdana', 10, 'bold')).grid()
+        self.thirdlabel = Label(self.frame, text='NOME DO ARQUIVO PARA SALVAR',
+                                font=('Verdana', 10, 'bold')).grid(pady=180,row=2,sticky=N)
         self.thirdentry = Entry(self.frame)
-        self.thirdentry.grid()
+        self.thirdentry.grid(pady=200,row=2,sticky=N)
+
         
         self.savebutton = Button(self.frame,text='SALVAR',width=15,fg='black',bg='white',border=2,relief='groove')
-        self.savebutton.grid(pady=5)
+        self.savebutton.grid(pady=225,row=2,sticky=N)
         self.savebutton.bind('<Button-1>',self.save_to_file)
         
     def load_archive(self,event):
@@ -156,5 +173,5 @@ class MainApplication:
 
 root = Tk()
 MainApplication(root)
-root.geometry('575x600')
+root.geometry('950x580')
 root.mainloop()
