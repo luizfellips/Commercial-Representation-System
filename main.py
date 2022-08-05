@@ -41,14 +41,14 @@ class MainApplication:
         self.tituloespec = Label(self.frame,text='PROCURAR ESPECIFICAÇÃO',font=('Verdana',10,'bold')).grid(pady=75,row=1,sticky=N)
         self.especification = Entry(self.frame)
         self.especification.grid(pady=100,row=1,sticky=N)
-        self.procurar = Button(self.frame,text='PROCURAR/RESETAR',width=15,fg='black',bg='white',border=2,relief='groove')
+        self.procurar = Button(self.frame,text='PROCURAR/RESETAR',width=19,fg='black',bg='white',border=2,relief='groove')
         self.procurar.grid(pady=125,row=1,sticky=N)
         self.procurar.bind('<Button-1>',self.search_for_infos)
         self.qtdlabel = Label(self.frame, text='QUANTIDADE',
                                 font=('Verdana', 10, 'bold')).grid(row=1,sticky=S,pady=100)
         self.quantiaentry = Entry(self.frame)
         self.quantiaentry.grid(row=1,sticky=S,pady=82)
-        self.addproductone = Button(self.frame,text='ADICIONAR',width=15,fg='black',bg='white',border=2,relief='groove')
+        self.addproductone = Button(self.frame,text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove')
         self.addproductone.grid(row=1,sticky=S,pady=50)
         self.addproductone.bind('<Button-1>',self.pull_infos)
 
@@ -127,7 +127,7 @@ class MainApplication:
 
             
         except:
-            self.carregar.config(text="ERRO AO CARREGAR, VERIFIQUE O NOME",bg="red",fg='white',width=50,relief='groove')
+            self.carregar.config(text="ERRO AO CARREGAR, VERIFIQUE O NOME",bg="red",fg='white',width=40,relief='groove')
             self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15,fg='black',bg='white',border=2,relief='groove'))
 
     
@@ -143,36 +143,44 @@ class MainApplication:
                 entire_list = (cods[i],especs[i],prices[i])
                 self.secondtree.insert('',END,values=entire_list)
             self.procurar.config(text='SUCESSO',bg='green',fg='white')
-            self.addproductone.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=15,fg='black',bg='white',border=2,relief='groove'))
+            self.addproductone.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=19,fg='black',bg='white',border=2,relief='groove'))
         except:
             self.procurar.config(text='UM ERRO OCORREU',bg='red',fg='white')
-            self.procurar.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=15,fg='black',bg='white',border=2,relief='groove'))
+            self.procurar.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=19,fg='black',bg='white',border=2,relief='groove'))
             
         
     def pull_infos(self,event):
-        try:
-            qtd = self.quantiaentry.get()
-            selected_items = self.secondtree.selection()
-            for selected_item in selected_items:
-                cod = self.secondtree.item(selected_item)['values'][0]
-                espec = self.secondtree.item(selected_item)['values'][1]
-                price = self.secondtree.item(selected_item)['values'][2]
-                tuple_of_products = (qtd,cod,espec,price)
-                self.list_of_products.append(tuple_of_products)
-                self.tree.insert('',END,values=tuple_of_products)
-            self.addproductone.config(text='SUCESSO',bg='green',fg='white')
-            self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=15,fg='black',bg='white',border=2,relief='groove'))
-        except:
+        qtd = self.quantiaentry.get()
+        if qtd.isnumeric():
+            try:
+                selected_items = self.secondtree.selection()
+                for selected_item in selected_items:
+                    cod = self.secondtree.item(selected_item)['values'][0]
+                    espec = self.secondtree.item(selected_item)['values'][1]
+                    price = self.secondtree.item(selected_item)['values'][2]
+                    tuple_of_products = (qtd,cod,espec,price)
+                    self.list_of_products.append(tuple_of_products)
+                    self.tree.insert('',END,values=tuple_of_products)
+                self.addproductone.config(text='SUCESSO',bg='green',fg='white')
+                self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
+            except:
+                self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
+                self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
+        else:
             self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
-            self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=15,fg='black',bg='white',border=2,relief='groove'))
-        
+            self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
+    
         
         
         
     def insert_infos(self,event):
-        self.product_df.set_index('CÓDIGO',inplace=True)
         def reset_button():
             self.addproduct.config(text='adicionar',width=15,fg='black',bg='white',border=2,relief='groove')
+        try:
+            self.product_df.set_index('CÓDIGO',inplace=True)
+        except:
+            self.addproduct.config(text="UM ERRO OCORREU",fg='white',bg='red',width=30)
+            self.addproduct.after(1000,reset_button)
         try:
             qtd = self.firstentry.get()
             cod = self.secondentry.get().upper().strip()
@@ -190,22 +198,23 @@ class MainApplication:
             self.firstentry.delete(0, END)
             self.secondentry.delete(0, END)
             self.firstentry.focus_force()
+            self.product_df.reset_index(inplace=True)
         except:
             self.addproduct.config(text="INFORMAÇÕES INVÁLIDAS",fg='white',bg='red',width=30)
             self.addproduct.after(1000,reset_button)
-        self.product_df.reset_index(inplace=True)
 
         
         
     def delete_item(self,event):
-        selected_items = self.tree.selection()
-        for selected_item in selected_items:          
-            for i in range(0,len(self.list_of_products)):
-                for item in self.list_of_products:
-                    if item[1] == self.tree.item(selected_item)['values'][1]:
-                        self.list_of_products.remove(item)  
-                        break      
-            self.tree.delete(selected_item)       
+            selected_items = self.tree.selection()
+            for selected_item in selected_items:          
+                for i in range(0,len(self.list_of_products)):
+                    for item in self.list_of_products:
+                        if item[1] == self.tree.item(selected_item)['values'][1]:
+                            self.list_of_products.remove(item)  
+                            break      
+                self.tree.delete(selected_item)   
+                
             
             
     
@@ -224,7 +233,7 @@ class MainApplication:
                 self.savebutton.config(text='SALVO COM SUCESSO',fg='white',bg='green',border=3,width=25,relief='groove')
                 self.savebutton.after(1500,lambda:self.savebutton.config(text='SALVAR',width=15,fg='black',bg='white',border=2,relief='groove'))
             else:
-                self.savebutton.config(text='ERRO  AO SALVAR, VERIFIQUE AS INFORMAÇÕES',fg='white',bg='red',border=2,width=50)
+                self.savebutton.config(text='ERRO  AO SALVAR, VERIFIQUE AS INFORMAÇÕES',fg='white',bg='red',border=2,width=40)
             self.savebutton.after(1500,lambda:self.savebutton.config(text='SALVAR',width=15,fg='black',bg='white',border=2,relief='groove'))
         except:    
             self.savebutton.config(text='ERRO TÉCNICO AO SALVAR',fg='white',bg='red',border=2,width=30)
