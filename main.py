@@ -1,3 +1,5 @@
+from cmath import nan
+from msvcrt import get_osfhandle
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
@@ -9,13 +11,15 @@ def find_especs_by_code(code,dataframe):
 
 
 def find_prices_by_code(code,dataframe):
-    price = str(dataframe.loc[code,'PREÇO'])
+    price = str(dataframe.loc[code,'PREÇO']).strip()
     formatted_price = price.replace(',','.') 
-    return float(formatted_price)
+    final_price = formatted_price.removeprefix('R$').strip()
+    return float(final_price)
 
 class MainApplication:
     def __init__(self, toplevel):
         self.list_of_products = []
+        self.sum_of_products = 0
         
         config = ('Verdana', 15, 'bold')
         columns = ('qtd','cod','espec','pre')
@@ -109,28 +113,36 @@ class MainApplication:
         self.savebutton.grid(pady=225,row=2,sticky=N)
         self.savebutton.bind('<Button-1>',self.save_to_file)
         
+        self.totaltitle = Label(self.frame,text='TOTAL:',fg='black',font=('Verdana', 13, 'bold')).place(x=895,y=486)
+        self.totalentrybox = Entry(self.frame,width=15)
+        self.totalentrybox.place(x=895,y=510)
         
     
     
     def load_archive(self,event):
         name = self.archivename.get()
-        try:
-            self.secondtree.delete(*self.secondtree.get_children())
-            self.product_data = pd.read_excel(f'_files/{name}')
-            self.product_df = pd.DataFrame(self.product_data)
-            self.carregar.config(text="CARREGADO COM SUCESSO",bg='green',fg='white',width=40,relief='groove')
-            self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15,fg='black',bg='white',border=2,relief='groove'))
-            cods = self.product_df['CÓDIGO'].tolist()
-            especs = self.product_df['ESPECIFICAÇÃO'].tolist()
-            prices = self.product_df['PREÇO'].tolist()
-            for i in range(0,len(self.product_df)):
-                entire_list = (cods[i],especs[i],prices[i])
-                self.secondtree.insert('',END,values=entire_list)
+        self.secondtree.delete(*self.secondtree.get_children())
+        self.product_data = pd.read_excel(f'_files/{name}')
+        self.product_df = pd.DataFrame(self.product_data)
+        self.product_df.dropna(inplace=True)
+        self.carregar.config(text="CARREGADO COM SUCESSO",bg='green',fg='white',width=40,relief='groove')
+        self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15,fg='black',bg='white',border=2,relief='groove'))
+        cods = self.product_df['CÓDIGO'].tolist()
+        especs = self.product_df['ESPECIFICAÇÃO'].tolist()
+        prices = self.product_df['PREÇO'].tolist()
+        finalprices = []
+        for item in prices:
+            price = str(item)
+            formatted_price = price.replace(',','.')
+            formatted_price = formatted_price.replace('PREÇO','00000000')
+            final_price = formatted_price.removeprefix('R$').strip()
+            finalprices.append(float(final_price))
+            
+        for i in range(0,len(self.product_df)):
+            entire_list = (cods[i],especs[i],finalprices[i])
+            self.secondtree.insert('',END,values=entire_list)
 
             
-        except:
-            self.carregar.config(text="ERRO AO CARREGAR, VERIFIQUE O NOME",bg="red",fg='white',width=40,relief='groove')
-            self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15,fg='black',bg='white',border=2,relief='groove'))
 
     
     def search_for_infos(self,event):
@@ -153,6 +165,7 @@ class MainApplication:
         
     def pull_infos(self,event):
         qtd = self.quantiaentry.get()
+
         if qtd.isnumeric():
             try:
                 selected_items = self.secondtree.selection()
@@ -160,20 +173,31 @@ class MainApplication:
                     cod = self.secondtree.item(selected_item)['values'][0]
                     espec = self.secondtree.item(selected_item)['values'][1]
                     price = self.secondtree.item(selected_item)['values'][2]
-                    tuple_of_products = (qtd,cod,espec,price)
+                    tuple_of_products = (float(qtd),cod,espec,float(price))
                     self.list_of_products.append(tuple_of_products)
                     self.tree.insert('',END,values=tuple_of_products)
                 self.addproductone.config(text='SUCESSO',bg='green',fg='white')
                 self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
                 self.especification.delete(0,END)
                 self.quantiaentry.delete(0,END)
+                self.update_sum()
             except:
-                self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
-                self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
+                    self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
+                    self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
         else:
             self.addproductone.config(text='UM ERRO OCORREU',bg='red',fg='white')
             self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19,fg='black',bg='white',border=2,relief='groove'))
     
+    def update_sum(self):
+        self.sum_of_products = 0
+        for item in self.list_of_products:
+            multiplied_result = item[3]*item[0]
+            self.sum_of_products += multiplied_result
+            
+        formatted_price = f'R${self.sum_of_products :.2f}'
+        self.totalentrybox.delete(0,END)
+        self.totalentrybox.insert(0,formatted_price)
+        
         
         
         
@@ -185,7 +209,7 @@ class MainApplication:
         except:
             self.addproduct.config(text="UM ERRO OCORREU",fg='white',bg='red',width=30)
             self.addproduct.after(1000,reset_button)
-        try:
+        try:           
             qtd = self.firstentry.get()
             cod = self.secondentry.get().upper().strip()
             if cod.isnumeric():    
@@ -194,20 +218,21 @@ class MainApplication:
             else:
                 especs = find_especs_by_code(cod,self.product_df)
                 prices = find_prices_by_code(cod,self.product_df)
-            tuple_of_product = (qtd,cod,especs,prices)
+            tuple_of_product = (float(qtd),cod,especs,float(prices))
             self.list_of_products.append(tuple_of_product)
-            self.tree.insert('',END,values=tuple_of_product)
+            self.tree.insert('',END,values=tuple_of_product)     
             self.addproduct.config(text='SUCESSO',fg='white',bg='green')
             self.addproduct.after(1000,reset_button)
             self.firstentry.delete(0, END)
             self.secondentry.delete(0, END)
             self.firstentry.focus_force()
             self.product_df.reset_index(inplace=True)
+            self.update_sum()
         except:
-            self.addproduct.config(text="INFORMAÇÕES INVÁLIDAS",fg='white',bg='red',width=30)
+            self.addproduct.config(text="UM ERRO OCORREU",fg='white',bg='red',width=30)
             self.addproduct.after(1000,reset_button)
-
         
+
         
     def delete_item(self,event):
             selected_items = self.tree.selection()
@@ -218,6 +243,7 @@ class MainApplication:
                             self.list_of_products.remove(item)  
                             break      
                 self.tree.delete(selected_item)   
+                self.update_sum()
                 
             
             
@@ -246,7 +272,8 @@ class MainApplication:
 
 
 
+
 root = Tk()
 MainApplication(root)
-root.geometry('950x580')
+root.geometry('1000x580')
 root.mainloop()
