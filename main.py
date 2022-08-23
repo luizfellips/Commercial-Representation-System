@@ -1,5 +1,3 @@
-from cmath import nan
-from msvcrt import get_osfhandle
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
