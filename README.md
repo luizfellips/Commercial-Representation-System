@@ -1,9 +1,9 @@
 
 # EXCEL AUTOMATIONS PROJECT
 
-<img src="https://user-images.githubusercontent.com/110192027/183164606-9dcbfcf2-12aa-43b3-8c00-908f4d14a96e.png" width="550" title="print1">
-<img src="https://user-images.githubusercontent.com/110192027/183164676-e98e67e0-123a-4fa2-b3d4-36b90fadb796.png" width="550" title="print2">
-<img src="https://user-images.githubusercontent.com/110192027/183164696-9ea81b51-57fc-4c51-997e-1050d857ba89.png" width="550" title="print3">
+<img src="https://user-images.githubusercontent.com/110192027/186056652-ec042fc8-f27e-4525-9a36-ccb7a4b0d9ea.png" width="550" title="print1">
+<img src="https://user-images.githubusercontent.com/110192027/186056911-470c8a6b-c3a5-47b7-b186-b8581bf15454.png" width="550" title="print2">
+
 
 
 Construí este sistema para facilitar no preenchimento de planilhas de acordo com dados inseridos. Utilizei a biblioteca padrão de construção de GUIs do Python(Tkinter) e Pandas para análise e processamento da base de dados de planilhas em Excel.
@@ -23,5 +23,6 @@ Construí este sistema para facilitar no preenchimento de planilhas de acordo co
 - O código dos arquivos deve ser inserido da seguinte maneira: 
 Se possuir apenas números: Digite apenas o número, sem nenhuma pontuação.
 Se possuir letras e números: Digite da forma que está na tabela, mesmo se houver pontuações.
+
 
 
