@@ -1,5 +1,4 @@
-from cmath import nan
-from msvcrt import get_osfhandle
+
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
@@ -280,4 +279,6 @@ class MainApplication:
 root = Tk()
 MainApplication(root)
 root.geometry('1000x585')
+root.mainloop()
+root.geometry('1000x580')
 root.mainloop()
