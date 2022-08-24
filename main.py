@@ -22,8 +22,11 @@ class MainApplication:
         
         root.call("source",'themes\\azure.tcl')
         root.call('set_theme','dark')
+        self.theme = 'dark'
         root.geometry('1200x610')
-
+        
+            
+        
         
         config = ('Verdana', 15, 'bold')
         columns = ('qtd','cod','espec','pre','tot')
@@ -32,6 +35,7 @@ class MainApplication:
 
         self.frame = Frame(toplevel).grid()
         self.frame2 = Frame(toplevel).grid()
+        
         
         
 
@@ -132,8 +136,8 @@ class MainApplication:
         self.product_df = pd.DataFrame(self.product_data)
         self.carregar.config(text="SUCESSO",width=15)
         self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15))
-        self.product_df['CÓDIGO'] = self.product_df['CÓDIGO'].str.upper()
         cods = self.product_df['CÓDIGO'].tolist()
+        print(cods)
         especs = self.product_df['ESPECIFICAÇÃO'].tolist()
         prices = self.product_df['PREÇO'].tolist()
         codslist = []
@@ -156,45 +160,39 @@ class MainApplication:
 
     
     def search_for_infos(self,event):
-        try:
-            espec = self.especification.get()
-            self.secondtree.delete(*self.secondtree.get_children())
-            dataoccurrences = self.product_df[self.product_df['ESPECIFICAÇÃO'].str.contains(espec,case=False) == True]
-            cods = dataoccurrences['CÓDIGO'].tolist()  
-            especs = dataoccurrences['ESPECIFICAÇÃO'].tolist()
-            prices = dataoccurrences['PREÇO'].tolist()
-            for i in range(0,len(dataoccurrences)):
-                entire_list = (cods[i],especs[i],prices[i])
-                self.secondtree.insert('',END,values=entire_list)
-            self.procurar.config(text='SUCESSO')
-            self.addproductone.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=19))
-        except:
-            self.procurar.config(text='UM ERRO OCORREU')
-            self.procurar.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=19))
+        espec = self.especification.get()
+        self.secondtree.delete(*self.secondtree.get_children())
+        dataoccurrences = self.product_df[self.product_df['ESPECIFICAÇÃO'].str.contains(espec,case=False) == True]
+        cods = dataoccurrences['CÓDIGO'].tolist()  
+        especs = dataoccurrences['ESPECIFICAÇÃO'].tolist()
+        prices = dataoccurrences['PREÇO'].tolist()
+        for i in range(0,len(dataoccurrences)):
+            entire_list = (cods[i],especs[i],prices[i])
+            self.secondtree.insert('',END,values=entire_list)
+        self.procurar.config(text='SUCESSO')
+        self.addproductone.after(1500,lambda: self.procurar.config(text='PROCURAR/RESETAR',width=19))
+
             
         
     def pull_infos(self,event):
         qtd = self.quantiaentry.get()
 
         if qtd.isnumeric():
-            try:
-                selected_items = self.secondtree.selection()
-                for selected_item in selected_items:
-                    cod = self.secondtree.item(selected_item)['values'][0]
-                    espec = self.secondtree.item(selected_item)['values'][1]
-                    price = self.secondtree.item(selected_item)['values'][2]
-                    total = float(price)*float(qtd)
-                    tuple_of_products = (float(qtd),cod,espec,float(price),f'R${total}')
-                    self.list_of_products.append(tuple_of_products)
-                    self.tree.insert('',END,values=tuple_of_products)
-                self.addproductone.config(text='SUCESSO')
-                self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19))
-                self.especification.delete(0,END)
-                self.quantiaentry.delete(0,END)
-                self.update_sum()
-            except:
-                    self.addproductone.config(text='UM ERRO OCORREU')
-                    self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19))
+            selected_items = self.secondtree.selection()
+            for selected_item in selected_items:
+                cod = self.secondtree.item(selected_item)['values'][0]
+                espec = self.secondtree.item(selected_item)['values'][1]
+                price = self.secondtree.item(selected_item)['values'][2]
+                treatmentprice = str(price).strip().replace(',','.')
+                total = float(treatmentprice)*float(qtd)
+                tuple_of_products = (float(qtd),cod,espec,float(treatmentprice),f'R${total}')
+                self.list_of_products.append(tuple_of_products)
+                self.tree.insert('',END,values=tuple_of_products)
+            self.addproductone.config(text='SUCESSO')
+            self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19))
+            self.especification.delete(0,END)
+            self.quantiaentry.delete(0,END)
+            self.update_sum()
         else:
             self.addproductone.config(text='UM ERRO OCORREU')
             self.addproductone.after(1500,lambda: self.addproductone.config(text='ADICIONAR',width=19))
@@ -206,7 +204,7 @@ class MainApplication:
             self.sum_of_products += multiplied_result
             
         formatted_price = f'R${self.sum_of_products :.2f}'
-        self.totalentrybox.delete(0,END)
+        self.totalentrybox.delete(0,'end')
         self.totalentrybox.insert(0,formatted_price)
         
         
@@ -277,7 +275,7 @@ class MainApplication:
 
 
 
-
-root = Tk()
-MainApplication(root)
-root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    MainApplication(root)
+    root.mainloop()
