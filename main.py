@@ -22,7 +22,7 @@ class MainApplication:
         self.sum_of_products = 0
         
         config = ('Verdana', 15, 'bold')
-        columns = ('qtd','cod','espec','pre')
+        columns = ('qtd','cod','espec','pre','tot')
         secondcolumns = ('cod','espec','pre')
         
 
@@ -97,10 +97,12 @@ class MainApplication:
         self.tree.heading('cod',text='Código',anchor=CENTER)
         self.tree.heading('espec',text='Especificação',anchor=CENTER)
         self.tree.heading('pre',text='Preço',anchor=CENTER)
+        self.tree.heading('tot',text='Total',anchor=CENTER)
         self.tree.column('cod',width=50)
         self.tree.column('qtd',width=50)
         self.tree.column('pre',width=50)
         self.tree.column('espec',width=400)
+        self.tree.column('tot',width=90)
         self.tree.grid(padx=15,row=2,column=1,sticky=N)
         
         self.thirdlabel = Label(self.frame, text='NOME DO ARQUIVO PARA SALVAR',
@@ -113,9 +115,9 @@ class MainApplication:
         self.savebutton.grid(pady=225,row=2,sticky=N)
         self.savebutton.bind('<Button-1>',self.save_to_file)
         
-        self.totaltitle = Label(self.frame,text='TOTAL:',fg='black',font=('Verdana', 13, 'bold')).place(x=895,y=486)
+        self.totaltitle = Label(self.frame,text='TOTAL:',fg='black',font=('Verdana', 13, 'bold')).place(x=855,y=533)
         self.totalentrybox = Entry(self.frame,width=15)
-        self.totalentrybox.place(x=895,y=510)
+        self.totalentrybox.place(x=855,y=558)
         
     
     
@@ -173,7 +175,8 @@ class MainApplication:
                     cod = self.secondtree.item(selected_item)['values'][0]
                     espec = self.secondtree.item(selected_item)['values'][1]
                     price = self.secondtree.item(selected_item)['values'][2]
-                    tuple_of_products = (float(qtd),cod,espec,float(price))
+                    total = float(price)*float(qtd)
+                    tuple_of_products = (float(qtd),cod,espec,float(price),f'R${total}')
                     self.list_of_products.append(tuple_of_products)
                     self.tree.insert('',END,values=tuple_of_products)
                 self.addproductone.config(text='SUCESSO',bg='green',fg='white')
@@ -218,7 +221,8 @@ class MainApplication:
             else:
                 especs = find_especs_by_code(cod,self.product_df)
                 prices = find_prices_by_code(cod,self.product_df)
-            tuple_of_product = (float(qtd),cod,especs,float(prices))
+            total = float(prices)*float(qtd)
+            tuple_of_product = (float(qtd),cod,especs,float(prices),f'R${total}')
             self.list_of_products.append(tuple_of_product)
             self.tree.insert('',END,values=tuple_of_product)     
             self.addproduct.config(text='SUCESSO',fg='white',bg='green')
@@ -275,5 +279,5 @@ class MainApplication:
 
 root = Tk()
 MainApplication(root)
-root.geometry('1000x580')
+root.geometry('1000x585')
 root.mainloop()
