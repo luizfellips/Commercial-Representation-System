@@ -20,9 +20,9 @@ class MainApplication:
         self.list_of_products = []
         self.sum_of_products = 0
         
-        sv_ttk.use_dark_theme()
-        sv_ttk.toggle_theme() 
-        sv_ttk.set_theme("dark")
+        root.call("source",'themes\\azure.tcl')
+        root.call('set_theme','dark')
+        self.theme = 'dark'
         
 
         root.geometry('1250x660')
