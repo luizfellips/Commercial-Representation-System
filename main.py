@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
-
+import sv_ttk
 
 def find_especs_by_code(code,dataframe):
     especification = dataframe.loc[code,'ESPECIFICAÇÃO']
@@ -20,10 +20,12 @@ class MainApplication:
         self.list_of_products = []
         self.sum_of_products = 0
         
-        root.call("source",'themes\\azure.tcl')
-        root.call('set_theme','dark')
-        self.theme = 'dark'
-        root.geometry('1200x610')
+        sv_ttk.use_dark_theme()
+        sv_ttk.toggle_theme() 
+        sv_ttk.set_theme("dark")
+        
+
+        root.geometry('1250x660')
         
             
         
@@ -35,9 +37,27 @@ class MainApplication:
 
         self.frame = Frame(toplevel).grid()
         self.frame2 = Frame(toplevel).grid()
+        self.alphabetic_variable = IntVar()
+        self.alphabetic_checkbox = ttk.Checkbutton(self.frame,text='ORDEM ALFABÉTICA',
+                                                   variable=self.alphabetic_variable,onvalue=1,offvalue=0,
+                                                   command=self.set_alphabetic)
+        self.alphabetic_checkbox.place(x=960,y=43)
         
+        self.ascending_variable = IntVar()
+        self.ascending_checkbox = ttk.Checkbutton(self.frame,text='PREÇO CRESCENTE',
+                                                   variable=self.ascending_variable,onvalue=1,offvalue=0,
+                                                   command=self.set_ascending)
         
+        self.ascending_checkbox.place(x=960,y=83)
         
+        self.descending_variable = IntVar()
+        self.descending_checkbox = ttk.Checkbutton(self.frame,text='PREÇO DECRESCENTE',
+                                                   variable=self.descending_variable,onvalue=1,offvalue=0,
+                                                   command=self.set_descending)
+        
+        self.descending_checkbox.place(x=960,y=123)
+        
+
 
         self.title = ttk.Label(self.frame, text='ESTRUTURADOR DE DADOS', font=config).grid(row=0)
         
@@ -120,24 +140,161 @@ class MainApplication:
 
         
         self.savebutton = ttk.Button(self.frame,text='SALVAR',width=15)
-        self.savebutton.place(x=90,y=565)
+        self.savebutton.place(x=90,y=585)
         self.savebutton.bind('<Button-1>',self.save_to_file)
         
         self.totaltitle = ttk.Label(self.frame,text='TOTAL:',font=('Verdana', 13, 'bold')).place(x=1040,y=330)
         self.totalentrybox = ttk.Entry(self.frame,width=15)
         self.totalentrybox.place(x=1040,y=360)
-        
     
+    
+    
+    
+    def set_descending(self):
+        var = self.descending_variable.get()
+        if var == 1:
+            self.secondtree.delete(*self.secondtree.get_children())
+            descending_df = self.product_df.sort_values(by=['PREÇO'],ascending=False)
+            cods = descending_df['CÓDIGO'].tolist()  
+            especs = descending_df['ESPECIFICAÇÃO'].tolist()
+            prices = descending_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+            for i in range(0,len(descending_df)):
+                entire_list = (cods[i],especs[i],prices[i])
+                self.secondtree.insert('',END,values=entire_list)
+        elif var == 0:
+            self.secondtree.delete(*self.secondtree.get_children())
+            cods = self.product_df['CÓDIGO'].tolist()
+            especs = self.product_df['ESPECIFICAÇÃO'].tolist()
+            prices = self.product_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+                
+            for i in range(0,len(self.product_df)):
+                entire_list = (codslist[i],especs[i],finalprices[i])
+                self.secondtree.insert('',END,values=entire_list)
+                
+                
+                
+    def set_ascending(self):
+        var = self.ascending_variable.get()
+        if var == 1:
+            self.secondtree.delete(*self.secondtree.get_children())
+            ascending_df = self.product_df.sort_values(by=['PREÇO'])
+            cods = ascending_df['CÓDIGO'].tolist()  
+            especs = ascending_df['ESPECIFICAÇÃO'].tolist()
+            prices = ascending_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+            for i in range(0,len(ascending_df)):
+                entire_list = (cods[i],especs[i],prices[i])
+                self.secondtree.insert('',END,values=entire_list)
+        elif var == 0:
+            self.secondtree.delete(*self.secondtree.get_children())
+            cods = self.product_df['CÓDIGO'].tolist()
+            especs = self.product_df['ESPECIFICAÇÃO'].tolist()
+            prices = self.product_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+                
+            for i in range(0,len(self.product_df)):
+                entire_list = (codslist[i],especs[i],finalprices[i])
+                self.secondtree.insert('',END,values=entire_list)
+            
+        
+    def set_alphabetic(self):
+        var = self.alphabetic_variable.get()
+        if var == 1:
+            self.secondtree.delete(*self.secondtree.get_children())
+            alphabetic_df = self.product_df.sort_values(by=['ESPECIFICAÇÃO'])
+            cods = alphabetic_df['CÓDIGO'].tolist()  
+            especs = alphabetic_df['ESPECIFICAÇÃO'].tolist()
+            prices = alphabetic_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+            for i in range(0,len(alphabetic_df)):
+                entire_list = (cods[i],especs[i],prices[i])
+                self.secondtree.insert('',END,values=entire_list)
+        elif var == 0:
+            self.secondtree.delete(*self.secondtree.get_children())
+            cods = self.product_df['CÓDIGO'].tolist()
+            especs = self.product_df['ESPECIFICAÇÃO'].tolist()
+            prices = self.product_df['PREÇO'].tolist()
+            codslist = []
+            for item in cods:
+                new_item = str(item).strip().upper()
+                codslist.append(new_item)  
+            finalprices = []
+            for item in prices:
+                price = str(item)
+                formatted_price = price.replace(',','.')
+                formatted_price = formatted_price.replace('PREÇO','00000000')
+                final_price = formatted_price.removeprefix('R$').strip()
+                finalprices.append(float(final_price))
+                
+            for i in range(0,len(self.product_df)):
+                entire_list = (codslist[i],especs[i],finalprices[i])
+                self.secondtree.insert('',END,values=entire_list)
+            
     
     def load_archive(self,event):
         name = self.archivename.get()
         self.secondtree.delete(*self.secondtree.get_children())
         self.product_data = pd.read_excel(f'_files/{name}')
         self.product_df = pd.DataFrame(self.product_data)
+        self.product_df.dropna(inplace=True)
+        self.product_df.drop(self.product_df[self.product_df['PREÇO'].astype(str).str.contains('PREÇO',case=False)].index,inplace=True)
+        self.product_df['PREÇO'] = self.product_df['PREÇO'].apply(lambda x: x.replace(',','.').strip() if isinstance(x,str) else x)
+        self.product_df = self.product_df.astype({"PREÇO": float})
         self.carregar.config(text="SUCESSO",width=15)
         self.carregar.after(1500,lambda:self.carregar.config(text="CARREGAR",width=15))
         cods = self.product_df['CÓDIGO'].tolist()
-        print(cods)
         especs = self.product_df['ESPECIFICAÇÃO'].tolist()
         prices = self.product_df['PREÇO'].tolist()
         codslist = []
@@ -185,7 +342,7 @@ class MainApplication:
                 price = self.secondtree.item(selected_item)['values'][2]
                 treatmentprice = str(price).strip().replace(',','.')
                 total = float(treatmentprice)*float(qtd)
-                tuple_of_products = (float(qtd),cod,espec,float(treatmentprice),f'R${total}')
+                tuple_of_products = (float(qtd),cod,espec,float(treatmentprice),f'R${total :.2f}')
                 self.list_of_products.append(tuple_of_products)
                 self.tree.insert('',END,values=tuple_of_products)
             self.addproductone.config(text='SUCESSO')
@@ -223,7 +380,7 @@ class MainApplication:
             especs = find_especs_by_code(str(cod),self.product_df)
             prices = find_prices_by_code(str(cod),self.product_df)
         total = float(prices)*float(qtd)
-        tuple_of_product = (float(qtd),cod,especs,float(prices),f'R${total}')
+        tuple_of_product = (float(qtd),cod,especs,float(prices),f'R${total :.2f}')
         self.list_of_products.append(tuple_of_product)
         self.tree.insert('',END,values=tuple_of_product)     
         self.addproduct.config(text='SUCESSO')
@@ -272,6 +429,7 @@ class MainApplication:
             self.savebutton.config(text='ERRO TÉCNICO AO SALVAR',fg='white',bg='red',border=2,width=30)
             self.savebutton.after(1500,lambda:self.savebutton.config(text='SALVAR',width=15))
             
+        
 
 
 
