@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
-import sv_ttk
 
 def find_especs_by_code(code,dataframe):
     especification = dataframe.loc[code,'ESPECIFICAÇÃO']
