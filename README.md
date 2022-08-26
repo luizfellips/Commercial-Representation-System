@@ -1,15 +1,14 @@
 
 # Commercial Representation System
 
-<img src="https://user-images.githubusercontent.com/110192027/186739477-acb24d6b-dfad-4f54-927a-ddcf2eeabc49.png" width="850" title="print1">
+<img src="https://user-images.githubusercontent.com/110192027/186963450-6471f881-a631-4762-a33a-ef8badaa3b01.png" width="950" title="print1">
 
 
-
-Construí este sistema para facilitar a análise de preços e cadastro de informações e consultas de representantes comerciais em planilhas Excel, utilizando Pandas e Tkinter.
+Construí este sistema para facilitar a análise de preços, cadastro de informações, consultas de representantes comerciais em planilhas Excel, e estudar sobre bibliotecas de análise de dados e construção de interfaces gráficas, utilizando Pandas e Tkinter.
 
 ### UTILIZANDO O PROGRAMA
 - Insira o nome do arquivo a ser lido com sua respectiva extensão, .xlsx
-(o mesmo deve estar no mesmo formato dos arquivos na pasta _files, com suas 3 colunas respectivas, CÓDIGO, ESPECIFICAÇÃO e PREÇO)
+(o mesmo deve estar no mesmo formato dos arquivos na pasta _files, com suas 3 colunas respectivas, CÓDIGO, ESPECIFICAÇÃO e PREÇO, COLUNAS , B e C no Excel)
 , toda sua base de dados será exibida na visualização em árvore PRODUTOS
 
 - Você pode filtrar a exibição pelo nome do produto, selecioná-lo na grade, inserir uma quantidade e adicionar diretamente À sua consulta.
