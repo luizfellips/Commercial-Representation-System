@@ -37,7 +37,6 @@ class MainApplication:
         
 
         self.frame = Frame(toplevel).grid()
-        self.frame2 = Frame(toplevel).grid()
         self.alphabetic_variable = IntVar()
         self.alphabetic_checkbox = ttk.Checkbutton(self.frame,text='ORDEM ALFABÉTICA',
                                                    variable=self.alphabetic_variable,onvalue=1,offvalue=0,
@@ -110,18 +109,21 @@ class MainApplication:
         self.deleteproduct.place(x=90,y=470)
         
         
-        self.secondtreetitle = ttk.Label(self.frame2,text='PRODUTOS',font=config).place(x=610,y=8)
-        self.secondtree = ttk.Treeview(self.frame2, columns=secondcolumns, show='headings')
+        self.secondtreetitle = ttk.Label(self.frame,text='PRODUTOS',font=config).place(x=610,y=8)
+        self.secondtree = ttk.Treeview(self.frame, columns=secondcolumns, show='headings',selectmode='browse')
         self.secondtree.heading('cod',text='Código',anchor=CENTER)
         self.secondtree.heading('espec',text='Especificação',anchor=CENTER)
         self.secondtree.heading('pre',text='Preço',anchor=CENTER)
         self.secondtree.column('cod',width=50)
         self.secondtree.column('pre',width=50)
         self.secondtree.column('espec',width=400)
-        self.secondtree.grid(pady=15,padx=15,row=1,column=1,sticky=N)
+        self.secondtree.place(x=410,y=40)
+        self.secondscrollbar = ttk.Scrollbar(self.frame,command=self.secondtree.yview,orient='vertical')
+        self.secondscrollbar.place(x=948,y=69,relheight=0.36)
+        self.secondtree.configure(yscrollcommand=self.secondscrollbar.set)
         
-        self.treetitle = ttk.Label(self.frame2,text='SUA CONSULTA',font=config).place(x=584,y=303)
-        self.tree = ttk.Treeview(self.frame2, columns=columns, show='headings')
+        self.treetitle = ttk.Label(self.frame,text='SUA CONSULTA',font=config).place(x=584,y=303)
+        self.tree = ttk.Treeview(self.frame, columns=columns, show='headings')
         self.tree.heading('qtd',text='Quantidade',anchor=CENTER)
         self.tree.heading('cod',text='Código',anchor=CENTER)
         self.tree.heading('espec',text='Especificação',anchor=CENTER)
@@ -132,12 +134,15 @@ class MainApplication:
         self.tree.column('pre',width=50)
         self.tree.column('espec',width=400)
         self.tree.column('tot',width=90)
-        self.tree.grid(padx=15,row=2,column=1,sticky=N)
+        self.tree.place(x=340,y=335)
+        self.scrollbar = ttk.Scrollbar(self.frame,command=self.tree.yview,orient='vertical')
+        self.scrollbar.place(x=1018,y=364,relheight=0.36)
+        self.tree.configure(yscrollcommand=self.scrollbar.set)
         
         self.thirdlabel = ttk.Label(self.frame, text='NOME DO ARQUIVO PARA SALVAR',
-                                font=('Verdana', 10, 'bold')).grid(pady=180,row=2,sticky=N)
+                                font=('Verdana', 10, 'bold')).place(x=86,y=525)
         self.thirdentry = ttk.Entry(self.frame)
-        self.thirdentry.grid(pady=200,row=2,sticky=N)
+        self.thirdentry.place(x=90,y=545)
 
         
         self.savebutton = ttk.Button(self.frame,text='SALVAR',width=15)
