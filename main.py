@@ -1,4 +1,3 @@
-
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
@@ -20,9 +19,12 @@ class MainApplication:
         self.list_of_products = []
         self.sum_of_products = 0
         
+        root.title('ANALYSIS SYSTEM')
+        pic = PhotoImage(file = 'icon.png')
+        root.iconphoto(False,pic)
         root.call("source",'themes\\azure.tcl')
         root.call('set_theme','dark')
-        self.theme = 'dark'
+    
         
 
         root.geometry('1250x660')
